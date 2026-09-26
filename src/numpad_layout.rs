@@ -86,6 +86,7 @@ pub(crate) struct NumpadLayout {
 #[derive(Debug, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub(crate) enum SupportedLayout {
     UX433FA,
+    UX3405CA,
     M433IA,
     UX581,
     GX701,
@@ -241,6 +242,36 @@ impl NumpadLayout {
         )
     }
 
+    pub fn ux3405ca(bbox: BBox) -> Self {
+        use EV_KEY::*;
+        Self::create(
+            vec![
+                vec![KEY_KP7, KEY_KP8, KEY_KP9, KEY_KPSLASH, KEY_BACKSPACE],
+                vec![KEY_KP4, KEY_KP5, KEY_KP6, KEY_KPASTERISK, KEY_BACKSPACE],
+                vec![KEY_KP1, KEY_KP2, KEY_KP3, KEY_KPMINUS, KEY_KPMINUS],
+                vec![KEY_KP0, KEY_KPDOT, KEY_KPENTER, KEY_KPPLUS, KEY_KPEQUAL],
+            ],
+            bbox.apply_margins(Margins {
+                top: 0.1,
+                bottom: 0.025,
+                left: 0.05,
+                right: 0.05,
+            }),
+            bbox.apply_margins(Margins {
+                top: 0.0,
+                bottom: 0.91,
+                left: 0.95,
+                right: 0.0,
+            }),
+            bbox.apply_margins(Margins {
+                top: 0.0,
+                bottom: 0.91,
+                left: 0.0,
+                right: 0.95,
+            }),
+        )
+    }
+
     pub fn gx701(bbox: BBox) -> Self {
         use EV_KEY::*;
         Self::create(
@@ -321,6 +352,7 @@ impl NumpadLayout {
         use SupportedLayout::*;
         let layout = match layout {
             UX433FA => Self::ux433fa(bbox),
+            UX3405CA => Self::ux3405ca(bbox),
             M433IA => Self::m433ia(bbox),
             UX581 => Self::ux581(bbox),
             GX701 => Self::gx701(bbox),
